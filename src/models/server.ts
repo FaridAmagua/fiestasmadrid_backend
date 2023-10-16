@@ -1,6 +1,9 @@
-import express, {Application,Request,Response} from 'express';
+import express ,{Application,Request,Response} from 'express';
+import cors from 'cors';
 import routesProducto from '../routes/producto'
 import db from '../db/connection'
+
+
 
 class Server{
     private app:express.Application;
@@ -32,18 +35,19 @@ class Server{
     }
     midlewares(){
         //parse the body
-        this.app.use(express.json())
+        this.app.use(express.json());
+        this.app.use(cors());
     }
     async dbConnect(){    
         try {
             await db.authenticate();
             console.log('Database connected');
         } catch (error) {
-            console.log(error);
+            console.log(error); 
             console.log('Connection error DB')
         }
     }
     
 }
 
-export default Server;
+export default Server; 

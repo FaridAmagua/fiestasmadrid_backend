@@ -1,5 +1,5 @@
 import Server from "./models/server";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 //configuration variables ambient
 dotenv.config();
