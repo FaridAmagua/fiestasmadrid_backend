@@ -12,7 +12,7 @@ class Server{
     constructor(){
         // console.log(process.env.PORT);
         this.app = express();
-        this.port= process.env.PORT || '1212';
+        this.port= process.env.PORT || '3030';
         this.listen();
         //important to place this function before the routes to parse the data.
         this.midlewares();
