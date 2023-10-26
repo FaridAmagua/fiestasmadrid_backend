@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const producto_1 = __importDefault(require("../routes/producto"));
-const connection_1 = __importDefault(require("../db/connection"));
+const user_1 = __importDefault(require("../routes/user"));
+const producto_2 = __importDefault(require("./producto"));
 class Server {
     constructor() {
         // console.log(process.env.PORT);
@@ -38,7 +39,8 @@ class Server {
                 msg: 'api working'
             });
         });
-        this.app.use('/api/productos', producto_1.default);
+        this.app.use('/api/products', producto_1.default);
+        this.app.use('/api/users', user_1.default);
     }
     midlewares() {
         //parse the body
@@ -48,8 +50,9 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield connection_1.default.authenticate();
-                console.log('Database connected');
+                yield producto_2.default.sync();
+                // await db.authenticate();
+                // console.log('Database connected');
             }
             catch (error) {
                 console.log(error);
