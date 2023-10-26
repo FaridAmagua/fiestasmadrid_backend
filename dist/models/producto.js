@@ -7,21 +7,23 @@ exports.Product = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 exports.Product = connection_1.default.define('Product', {
-    product_id: {
+    id: {
         type: sequelize_1.DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        primaryKey: true
     },
     product_name: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     product_stock: {
         type: sequelize_1.DataTypes.INTEGER
     }
 }, {
-    createdAt: true,
-    updatedAt: true,
-    freezeTableName: false // prevents the table from becoming pluriform
+    freezeTableName: false,
     //correct the driver because i want to change the name to product_id
+    createdAt: false,
+    updatedAt: false,
+    // Configura la función para generar las fechas
 });
 exports.default = exports.Product;

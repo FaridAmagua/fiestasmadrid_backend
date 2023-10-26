@@ -9,19 +9,26 @@ const connection_1 = __importDefault(require("../db/connection"));
 exports.User = connection_1.default.define('Users', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        primaryKey: true
     },
-    username: {
+    user_name: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
-    description: {
+    user_description: {
         type: sequelize_1.DataTypes.STRING
-    }
+    },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        defaultValue: sequelize_1.Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        defaultValue: sequelize_1.Sequelize.literal('CURRENT_TIMESTAMP'),
+    },
 }, {
-    createdAt: true,
-    updatedAt: true,
-    freezeTableName: false // prevents the table from becoming pluriform seq-document
-    //correct the driver because i want to change the name to product_id
+    timestamps: true,
+    freezeTableName: false,
 });
 exports.default = exports.User;

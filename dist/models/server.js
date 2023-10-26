@@ -17,6 +17,7 @@ const cors_1 = __importDefault(require("cors"));
 const producto_1 = __importDefault(require("../routes/producto"));
 const user_1 = __importDefault(require("../routes/user"));
 const producto_2 = __importDefault(require("./producto"));
+const user_2 = __importDefault(require("./user"));
 class Server {
     constructor() {
         // console.log(process.env.PORT);
@@ -50,9 +51,10 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield producto_2.default.sync();
+                yield producto_2.default.sync({ force: true }); //force para borrar los datos , despues hay que poner un sync 
+                yield user_2.default.sync({ force: true });
                 // await db.authenticate();
-                // console.log('Database connected');
+                console.log('Database connected');
             }
             catch (error) {
                 console.log(error);
