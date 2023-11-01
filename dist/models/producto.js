@@ -22,8 +22,9 @@ exports.Product = connection_1.default.define('Product', {
 }, {
     freezeTableName: false,
     //correct the driver because i want to change the name to product_id
-    createdAt: false,
-    updatedAt: false,
+    timestamps: true,
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     // Configura la función para generar las fechas
 });
 exports.default = exports.Product;

@@ -6,29 +6,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-exports.User = connection_1.default.define('Users', {
+exports.User = connection_1.default.define('User', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
-    user_name: {
+    username: {
         type: sequelize_1.DataTypes.STRING,
+        unique: true,
         allowNull: false
     },
-    user_description: {
-        type: sequelize_1.DataTypes.STRING
-    },
-    createdAt: {
-        type: sequelize_1.DataTypes.DATE,
-        defaultValue: sequelize_1.Sequelize.literal('CURRENT_TIMESTAMP'),
-    },
-    updatedAt: {
-        type: sequelize_1.DataTypes.DATE,
-        defaultValue: sequelize_1.Sequelize.literal('CURRENT_TIMESTAMP'),
-    },
+    password: {
+        type: sequelize_1.DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    }
 }, {
-    timestamps: true,
     freezeTableName: false,
+    timestamps: true,
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
 });
 exports.default = exports.User;

@@ -1,19 +1,26 @@
 import { DataTypes } from 'sequelize';
-import db from '../db/connection';
+    import sequelize from '../db/connection';
 
-const Product = db.define('PRODUCTS', {
+export const Product = sequelize.define('Product', {
+    id:{
+        type:DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey:true
+    },
     product_name: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     product_stock: {
         type: DataTypes.INTEGER
     }
-}, {
-    createdAt: false,
-    updatedAt: false,
-    freezeTableName: true // prevents the table from becoming pluriform
+}, {    
+    freezeTableName: false, // prevents the table from becoming pluriform seq-document
+    //correct the driver because i want to change the name to product_id
+    timestamps: true,
+    createdAt: 'createdAt',
+    updatedAt:'updatedAt',  
+    // Configura la función para generar las fechas
+   
 });
-
 export default Product;
-
-//correct the driver because i want to change the name to product_id

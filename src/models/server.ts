@@ -1,7 +1,10 @@
 import express ,{Application,Request,Response} from 'express';
+import db from '../db/connection'
 import cors from 'cors';
 import routesProducto from '../routes/producto'
-import db from '../db/connection'
+import routesUsers from '../routes/user'
+import Product from './producto';
+import User from './user';
 
 
 
@@ -29,9 +32,10 @@ class Server{
         this.app.get('/',(req:Request,res:Response)=> {
             res.json({
                 msg: 'api working'
-            })
+            })  
         })
-        this.app.use('/api/productos',routesProducto)
+        this.app.use('/api/v1/products',routesProducto)
+        this.app.use('/api/v1/users',routesUsers)    
     }
     midlewares(){
         //parse the body
@@ -40,6 +44,9 @@ class Server{
     }
     async dbConnect(){    
         try {
+            await Product.sync({force: true}); 
+            //force para borrar los datos , despues hay que poner un sync 
+            await User.sync({force: true});
             await db.authenticate();
             console.log('Database connected');
         } catch (error) {

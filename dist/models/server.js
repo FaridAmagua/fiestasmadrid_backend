@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const connection_1 = __importDefault(require("../db/connection"));
 const cors_1 = __importDefault(require("cors"));
 const producto_1 = __importDefault(require("../routes/producto"));
 const user_1 = __importDefault(require("../routes/user"));
@@ -40,8 +41,8 @@ class Server {
                 msg: 'api working'
             });
         });
-        this.app.use('/api/products', producto_1.default);
-        this.app.use('/api/users', user_1.default);
+        this.app.use('/api/v1/products', producto_1.default);
+        this.app.use('/api/v1/users', user_1.default);
     }
     midlewares() {
         //parse the body
@@ -51,9 +52,10 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield producto_2.default.sync({ force: true }); //force para borrar los datos , despues hay que poner un sync 
+                yield producto_2.default.sync({ force: true });
+                //force para borrar los datos , despues hay que poner un sync 
                 yield user_2.default.sync({ force: true });
-                // await db.authenticate();
+                yield connection_1.default.authenticate();
                 console.log('Database connected');
             }
             catch (error) {
