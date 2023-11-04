@@ -15,12 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUser = exports.loginUser = exports.newUser = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
     //validation in case the user already exists in the database 
     const user = yield user_1.default.findOne({ where: { username: username } });
     if (user) {
-        res.status(400).json({
+        //return because u cant end the process
+        return res.status(400).json({
             msg: 'User ' + username + ' already exists'
         });
     }
@@ -44,13 +46,31 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.newUser = newUser;
-const loginUser = (req, res) => {
-    const { body } = req;
-    res.json({
-        msg: 'Login user',
-        body
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { username, password } = req.body;
+    //validate username
+    const user = yield user_1.default.findOne({ where: { username: username } });
+    if (!user) {
+        return res.status(400).json({
+            msg: 'User ' + username + ' not found or no existent'
+        });
+    }
+    //validate password
+    const passwordValid = yield bcrypt_1.default.compare(password, user.password);
+    if (!passwordValid) {
+        return res.status(404).json({
+            msg: 'invalid password'
+        });
+    }
+    //Generate token
+    const token = jsonwebtoken_1.default.sign({
+        username: username
+    }, process.env.SECRET_KEY || 'pass1123', {
+        //token time expiration
+        expiresIn: '10000'
     });
-};
+    res.json({ token });
+});
 exports.loginUser = loginUser;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
+
 import User from "../models/user";
 import bcryp from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 export const newUser =async (req:Request, res:Response)=>{
@@ -11,7 +13,8 @@ export const newUser =async (req:Request, res:Response)=>{
     const user = await User.findOne({where:{username:username}});
 
     if (user){
-        res.status(400).json({
+        //return because u cant end the process
+        return res.status(400).json({
             msg: 'User '+username+' already exists'
         })
     }
@@ -37,17 +40,39 @@ export const newUser =async (req:Request, res:Response)=>{
         })
     }
 
-    }
+    };
 
-    export const loginUser = (req:Request, res:Response) => {
+export const loginUser = async (req:Request, res:Response) => {
 
-        const {body} = req;
-        
-        res.json({
-            msg:'Login user',
-            body
+  const { username, password } = req.body;
+
+      //validate username
+    const user:any = await User.findOne({ where: { username: username} });
+
+      if (!user) {
+        return res.status(400).json({
+          msg:'User '+username+ ' not found or no existent'
         })
+      }
+
+      //validate password
+      const passwordValid = await bcryp.compare(password, user.password)
+      if(!passwordValid) {
+        return res.status(404).json({
+          msg:'invalid password' 
+        })
+      }
+      //Generate token
+      const token = jwt.sign({
+        username: username
+      },process.env.SECRET_KEY || 'pass1123',{
+        //token time expiration
+        expiresIn:'10000'
+      });
+      res.json({token});
+      
     }
+
     export const updateUser = async (req: Request, res: Response) => {
         try {
           const { id } = req.params; // Supongamos que estás pasando el ID del usuario a través de los parámetros de la URL.
@@ -73,6 +98,6 @@ export const newUser =async (req:Request, res:Response)=>{
           // Manejo de errores
           res.status(500).json({ error: 'Error en la actualización del usuario' });
         }
-      };
+    };
     
 

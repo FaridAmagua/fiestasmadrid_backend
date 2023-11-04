@@ -52,9 +52,9 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield producto_2.default.sync({ force: true });
+                yield producto_2.default.sync({ force: false });
                 //force para borrar los datos , despues hay que poner un sync 
-                yield user_2.default.sync({ force: true });
+                yield user_2.default.sync({ force: false });
                 yield connection_1.default.authenticate();
                 console.log('Database connected');
             }

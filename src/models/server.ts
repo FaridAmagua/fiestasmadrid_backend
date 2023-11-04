@@ -44,9 +44,9 @@ class Server{
     }
     async dbConnect(){    
         try {
-            await Product.sync({force: true}); 
+            await Product.sync({force: false}); 
             //force para borrar los datos , despues hay que poner un sync 
-            await User.sync({force: true});
+            await User.sync({force: false});
             await db.authenticate();
             console.log('Database connected');
         } catch (error) {
